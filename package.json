@@ -1,0 +1,17 @@
+{
+  "name": "bottechnology-twitter",
+  "version": "1.0.0",
+  "description": "Bot para o twitter desenvolvido por Rafael Paes",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": "https://github.com/paesrafael/bottechnology-twitter",
+  "author": "Rafael Paes <rafael@pointec.dev>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "twit": "^2.2.11",
+    "twitter": "^1.7.1"
+  }
+}
