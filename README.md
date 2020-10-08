@@ -8,8 +8,9 @@ Um Bot para retweet sobre a Tecnologia.
 - dotenv
 - twitter
 - twit
+- twitter-lite
 
-Ainda estou analisando entre as libs: twitter e twit.
+Ainda estou analisando entre as libs: twitter, twit ou twitter-lite.
 
 # Configurações
 
