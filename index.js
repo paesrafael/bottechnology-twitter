@@ -1,0 +1,262 @@
+const Twitter = require('twitter')
+
+require('dotenv').config()
+
+const Tweet = new Twitter({
+  consumer_key: process.env.BOT_API_KEY,
+  consumer_secret: process.env.BOT_API_KEY_SECRET,
+  access_token_key: process.env.BOT_ACCESS_TOKEN,
+  access_token_secret: process.env.BOT_ACCESS_TOKEN_SECRET,
+})
+
+function BotAction(event) {
+  const { retweeted_status, id_str, is_quote_status } = event
+
+  const { screen_name } = event.user
+
+  if (!retweeted_status && !is_quote_status) {
+    Tweet.post(`statuses/retweet/${id_str}`, (error) => {
+      if (error) {
+        console.log('Error retweet: ' + error)
+      } else {
+        console.log(
+          `Retweet OK https://twitter.com/${screen_name}/status/${id_str}`
+        )
+      }
+    })
+  } else {
+    return
+  }
+}
+
+const stream = Tweet.stream('statuses/filter', {
+  track: 'WordPress, ReactJS, React Native, Javascript, Tecnologia',
+})
+
+stream.on('data', BotAction)
+
+stream.on('error', (error) => console.log('Error ' + error))
+
+// {
+//   created_at: 'Tue Oct 06 19:06:33 +0000 2020',
+//   id: 1313556267017932800,
+//   id_str: '1313556267017932801',
+//   text: 'pointec',
+//   source: '<a href="https://mobile.twitter.com" rel="nofollow">Twitter Web App</a>',
+//   truncated: false,
+//   in_reply_to_status_id: null,
+//   in_reply_to_status_id_str: null,
+//   in_reply_to_user_id: null,
+//   in_reply_to_user_id_str: null,
+//   in_reply_to_screen_name: null,
+//   user: {
+//     id: 942909454017851400,
+//     id_str: '942909454017851392',
+//     name: 'Rafael Paes',
+//     screen_name: 'paesrfael',
+//     location: 'Brasil',
+//     url: 'https://pointec.dev',
+//     description: 'Developer Frontend / Backend. WordPress Specialist. ReactJS, React Native, NodeJS, Javascript',
+//     translator_type: 'none',
+//     protected: false,
+//     verified: false,
+//     followers_count: 8,
+//     friends_count: 20,
+//     listed_count: 0,
+//     favourites_count: 8,
+//     statuses_count: 111,
+//     created_at: 'Tue Dec 19 00:08:27 +0000 2017',
+//     utc_offset: null,
+//     time_zone: null,
+//     geo_enabled: false,
+//     lang: null,
+//     contributors_enabled: false,
+//     is_translator: false,
+//     profile_background_color: 'F5F8FA',
+//     profile_background_image_url: '',
+//     profile_background_image_url_https: '',
+//     profile_background_tile: false,
+//     profile_link_color: '1DA1F2',
+//     profile_sidebar_border_color: 'C0DEED',
+//     profile_sidebar_fill_color: 'DDEEF6',
+//     profile_text_color: '333333',
+//     profile_use_background_image: true,
+//     profile_image_url: 'http://pbs.twimg.com/profile_images/1206687749635559424/mnX0qxkD_normal.jpg',
+//     profile_image_url_https: 'https://pbs.twimg.com/profile_images/1206687749635559424/mnX0qxkD_normal.jpg',
+//     profile_banner_url: 'https://pbs.twimg.com/profile_banners/942909454017851392/1576532242',
+//     default_profile: true,
+//     default_profile_image: false,
+//     following: null,
+//     follow_request_sent: null,
+//     notifications: null
+//   },
+//   geo: null,
+//   coordinates: null,
+//   place: null,
+//   contributors: null,
+//   is_quote_status: false,
+//   quote_count: 0,
+//   reply_count: 0,
+//   retweet_count: 0,
+//   favorite_count: 0,
+//   entities: { hashtags: [], urls: [], user_mentions: [], symbols: [] },
+//   favorited: false,
+//   retweeted: false,
+//   filter_level: 'low',
+//   lang: 'en',
+//   timestamp_ms: '1602011193409'
+// }
+
+// =================================
+// {
+//   created_at: 'Tue Oct 06 19:06:39 +0000 2020',
+//   id: 1313556291244228600,
+//   id_str: '1313556291244228608',
+//   text: 'RT @paesrfael: pointec',
+//   source: '',
+//   truncated: false,
+//   in_reply_to_status_id: null,
+//   in_reply_to_status_id_str: null,
+//   in_reply_to_user_id: null,
+//   in_reply_to_user_id_str: null,
+//   in_reply_to_screen_name: null,
+//   user: {
+//     id: 942909454017851400,
+//     id_str: '942909454017851392',
+//     name: 'Rafael Paes',
+//     screen_name: 'paesrfael',
+//     location: 'Brasil',
+//     url: 'https://pointec.dev',
+//     description: 'Developer Frontend / Backend. WordPress Specialist. ReactJS, React Native, NodeJS, Javascript',
+//     translator_type: 'none',
+//     protected: false,
+//     verified: false,
+//     followers_count: 8,
+//     friends_count: 20,
+//     listed_count: 0,
+//     favourites_count: 8,
+//     statuses_count: 112,
+//     created_at: 'Tue Dec 19 00:08:27 +0000 2017',
+//     utc_offset: null,
+//     time_zone: null,
+//     geo_enabled: false,
+//     lang: null,
+//     contributors_enabled: false,
+//     is_translator: false,
+//     profile_background_color: 'F5F8FA',
+//     profile_background_image_url: '',
+//     profile_background_image_url_https: '',
+//     profile_background_tile: false,
+//     profile_link_color: '1DA1F2',
+//     profile_sidebar_border_color: 'C0DEED',
+//     profile_sidebar_fill_color: 'DDEEF6',
+//     profile_text_color: '333333',
+//     profile_use_background_image: true,
+//     profile_image_url: 'http://pbs.twimg.com/profile_images/1206687749635559424/mnX0qxkD_normal.jpg',
+//     profile_image_url_https: 'https://pbs.twimg.com/profile_images/1206687749635559424/mnX0qxkD_normal.jpg',
+//     profile_banner_url: 'https://pbs.twimg.com/profile_banners/942909454017851392/1576532242',
+//     default_profile: true,
+//     default_profile_image: false,
+//     following: null,
+//     follow_request_sent: null,
+//     notifications: null
+//   },
+//   geo: null,
+//   coordinates: null,
+//   place: null,
+//   contributors: null,
+//   retweeted_status: {
+//     created_at: 'Tue Oct 06 19:06:33 +0000 2020',
+//     id: 1313556267017932800,
+//     id_str: '1313556267017932801',
+//     text: 'pointec',
+//     source: '<a href="https://mobile.twitter.com" rel="nofollow">Twitter Web App</a>',
+//     truncated: false,
+//     in_reply_to_status_id: null,
+//     in_reply_to_status_id_str: null,
+//     in_reply_to_user_id: null,
+//     in_reply_to_user_id_str: null,
+//     in_reply_to_screen_name: null,
+//     user: {
+//       id: 942909454017851400,
+//       id_str: '942909454017851392',
+//       name: 'Rafael Paes',
+//       screen_name: 'paesrfael',
+//       location: 'Brasil',
+//       url: 'https://pointec.dev',
+//       description: 'Developer Frontend / Backend. WordPress Specialist. ReactJS, React Native, NodeJS, Javascript',
+//       translator_type: 'none',
+//       protected: false,
+//       verified: false,
+//       followers_count: 8,
+//       friends_count: 20,
+//       listed_count: 0,
+//       favourites_count: 8,
+//       statuses_count: 111,
+//       created_at: 'Tue Dec 19 00:08:27 +0000 2017',
+//       utc_offset: null,
+//       time_zone: null,
+//       geo_enabled: false,
+//       lang: null,
+//       contributors_enabled: false,
+//       is_translator: false,
+//       profile_background_color: 'F5F8FA',
+//       profile_background_image_url: '',
+//       profile_background_image_url_https: '',
+//       profile_background_tile: false,
+//       profile_link_color: '1DA1F2',
+//       profile_sidebar_border_color: 'C0DEED',
+//       profile_sidebar_fill_color: 'DDEEF6',
+//       profile_text_color: '333333',
+//       profile_use_background_image: true,
+//       profile_image_url: 'http://pbs.twimg.com/profile_images/1206687749635559424/mnX0qxkD_normal.jpg',
+//       profile_image_url_https: 'https://pbs.twimg.com/profile_images/1206687749635559424/mnX0qxkD_normal.jpg',
+//       profile_banner_url: 'https://pbs.twimg.com/profile_banners/942909454017851392/1576532242',
+//       default_profile: true,
+//       default_profile_image: false,
+//       following: null,
+//       follow_request_sent: null,
+//       notifications: null
+//     },
+//     geo: null,
+//     coordinates: null,
+//     place: null,
+//     contributors: null,
+//     is_quote_status: false,
+//     quote_count: 0,
+//     reply_count: 0,
+//     retweet_count: 1,
+//     favorite_count: 0,
+//     entities: { hashtags: [], urls: [], user_mentions: [], symbols: [] },
+//     favorited: false,
+//     retweeted: false,
+//     filter_level: 'low',
+//     lang: 'en'
+//   },
+//   is_quote_status: false,
+//   quote_count: 0,
+//   reply_count: 0,
+//   retweet_count: 0,
+//   favorite_count: 0,
+//     quote_count: 0,
+//     reply_count: 0,
+//     retweet_count: 1,
+//     favorite_count: 0,
+//     entities: { hashtags: [], urls: [], user_mentions: [], symbols: [] },
+//     favorited: false,
+//     retweeted: false,
+//     filter_level: 'low',
+//     lang: 'en'
+//   },
+//   is_quote_status: false,
+//   quote_count: 0,
+//   reply_count: 0,
+//   retweet_count: 0,
+//   favorite_count: 0,
+//   entities: { hashtags: [], urls: [], user_mentions: [ [Object] ], symbols: [] },
+//   favorited: false,
+//   retweeted: false,
+//   filter_level: 'low',
+//   lang: 'en',
+//   timestamp_ms: '1602011199185'
+// }
